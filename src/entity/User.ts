@@ -6,9 +6,14 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
+  ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { IsEmail } from "class-validator";
-import { createHash } from "crypto";
+import Chat from "./Chat";
+import Message from "./Message";
+import Verification from "./Verification";
+import Ride from "./Ride";
 
 const BCRYPT_ROUNDS = 10;
 
@@ -61,6 +66,21 @@ export class User {
 
   @Column({ type: "double precision", default: 0 })
   lastOrientation: number;
+
+  @ManyToOne((type) => Chat, (chat) => chat.participants)
+  chat: Chat;
+
+  @OneToMany((type) => Message, (message) => message.user)
+  messages: Message[];
+
+  @OneToMany((type) => Verification, (verification) => verification.user)
+  verifications: Verification[];
+
+  @OneToMany((type) => Ride, (ride) => ride.passenger)
+  ridesAsPassenger: Ride[];
+
+  @OneToMany((type) => Ride, (ride) => ride.driver)
+  ridesAsDriver: Ride[];
 
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;

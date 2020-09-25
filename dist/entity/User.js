@@ -47,6 +47,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt_1 = require("bcrypt");
 var typeorm_1 = require("typeorm");
 var class_validator_1 = require("class-validator");
+var Chat_1 = require("./Chat");
+var Message_1 = require("./Message");
+var Verification_1 = require("./Verification");
+var Ride_1 = require("./Ride");
 var BCRYPT_ROUNDS = 10;
 var User = /** @class */ (function () {
     function User() {
@@ -157,6 +161,26 @@ var User = /** @class */ (function () {
         typeorm_1.Column({ type: "double precision", default: 0 }),
         __metadata("design:type", Number)
     ], User.prototype, "lastOrientation", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return Chat_1.default; }, function (chat) { return chat.participants; }),
+        __metadata("design:type", Chat_1.default)
+    ], User.prototype, "chat", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Message_1.default; }, function (message) { return message.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "messages", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Verification_1.default; }, function (verification) { return verification.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "verifications", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Ride_1.default; }, function (ride) { return ride.passenger; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "ridesAsPassenger", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Ride_1.default; }, function (ride) { return ride.driver; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "ridesAsDriver", void 0);
     __decorate([
         typeorm_1.BeforeInsert(),
         typeorm_1.BeforeUpdate(),

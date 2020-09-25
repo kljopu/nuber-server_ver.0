@@ -1,5 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from "typeorm";
 import { rideStatus } from "src/types/types";
+import { User } from "./User";
 
 //enum
 const ACCEPTED = "ACCEPTED";
@@ -7,14 +14,21 @@ const FINISHED = "FINISHED";
 const CANCLE = "CANCLE";
 const REQUESTING = "REQUESTING";
 const ONROUTE = "ONROUTE";
+export enum RideStatus {
+  ACCEPTED = "ACCEPTED",
+  FINISHED = "FINISHED",
+  CANCLE = "CANCLE",
+  REQUESTING = "REQUESTING",
+  ONROUTE = "ONROUTE",
+}
 
 @Entity()
 class Ride extends BaseEntity {
   @PrimaryGeneratedColumn() id!: number;
 
   @Column({
-    type: "text",
-    enum: [ACCEPTED, FINISHED, CANCLE, REQUESTING, ONROUTE],
+    type: "enum",
+    enum: RideStatus,
   })
   status!: rideStatus;
 
@@ -48,6 +62,12 @@ class Ride extends BaseEntity {
   @Column({ type: "timestamp" }) createdAt: Date;
 
   @Column({ type: "timestamp" }) updatedAt: Date;
+
+  @ManyToOne((type) => User, (user) => user.ridesAsPassenger)
+  passenger!: User;
+
+  @ManyToOne((type) => User, (user) => user.ridesAsDriver)
+  driver!: User;
 }
 
 export default Ride;

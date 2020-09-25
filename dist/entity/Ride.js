@@ -23,12 +23,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var User_1 = require("./User");
 //enum
 var ACCEPTED = "ACCEPTED";
 var FINISHED = "FINISHED";
 var CANCLE = "CANCLE";
 var REQUESTING = "REQUESTING";
 var ONROUTE = "ONROUTE";
+var RideStatus;
+(function (RideStatus) {
+    RideStatus["ACCEPTED"] = "ACCEPTED";
+    RideStatus["FINISHED"] = "FINISHED";
+    RideStatus["CANCLE"] = "CANCLE";
+    RideStatus["REQUESTING"] = "REQUESTING";
+    RideStatus["ONROUTE"] = "ONROUTE";
+})(RideStatus = exports.RideStatus || (exports.RideStatus = {}));
 var Ride = /** @class */ (function (_super) {
     __extends(Ride, _super);
     function Ride() {
@@ -40,8 +49,8 @@ var Ride = /** @class */ (function (_super) {
     ], Ride.prototype, "id", void 0);
     __decorate([
         typeorm_1.Column({
-            type: "text",
-            enum: [ACCEPTED, FINISHED, CANCLE, REQUESTING, ONROUTE],
+            type: "enum",
+            enum: RideStatus,
         }),
         __metadata("design:type", String)
     ], Ride.prototype, "status", void 0);
@@ -89,6 +98,14 @@ var Ride = /** @class */ (function (_super) {
         typeorm_1.Column({ type: "timestamp" }),
         __metadata("design:type", Date)
     ], Ride.prototype, "updatedAt", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.ridesAsPassenger; }),
+        __metadata("design:type", User_1.User)
+    ], Ride.prototype, "passenger", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.ridesAsDriver; }),
+        __metadata("design:type", User_1.User)
+    ], Ride.prototype, "driver", void 0);
     Ride = __decorate([
         typeorm_1.Entity()
     ], Ride);

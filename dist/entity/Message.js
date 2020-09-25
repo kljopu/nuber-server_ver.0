@@ -23,67 +23,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var Chat_1 = require("./Chat");
 var User_1 = require("./User");
-var PHONE = "PHONE";
-var EMAIL = "EMAIL";
-var Verification = /** @class */ (function (_super) {
-    __extends(Verification, _super);
-    function Verification() {
+var Message = /** @class */ (function (_super) {
+    __extends(Message, _super);
+    function Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Verification.prototype.createKey = function () {
-        if (this.target === PHONE) {
-            this.key = Math.floor(Math.random() * 100000).toString();
-        }
-        else {
-            this.key = Math.random().toString(36).substr(2);
-        }
-    };
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Verification.prototype, "id", void 0);
+    ], Message.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column({ type: "text", enum: [PHONE, EMAIL] }),
-        __metadata("design:type", String)
-    ], Verification.prototype, "target", void 0);
-    __decorate([
-        typeorm_1.Column({ type: "text" }),
-        __metadata("design:type", String)
-    ], Verification.prototype, "payload", void 0);
+        typeorm_1.ManyToOne(function (type) { return Chat_1.default; }, function (chat) { return chat.messages; }),
+        __metadata("design:type", Chat_1.default)
+    ], Message.prototype, "chat", void 0);
     __decorate([
         typeorm_1.Column({ type: "text" }),
         __metadata("design:type", String)
-    ], Verification.prototype, "key", void 0);
+    ], Message.prototype, "text", void 0);
     __decorate([
-        typeorm_1.Column({
-            type: "boolean",
-            default: false,
-        }),
-        __metadata("design:type", Boolean)
-    ], Verification.prototype, "used", void 0);
-    __decorate([
-        typeorm_1.Column({ type: "timestamp" }),
-        __metadata("design:type", Date)
-    ], Verification.prototype, "createdAt", void 0);
-    __decorate([
-        typeorm_1.Column({ type: "timestamp" }),
-        __metadata("design:type", Date)
-    ], Verification.prototype, "updatedAt", void 0);
-    __decorate([
-        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.verifications; }),
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.messages; }),
         __metadata("design:type", User_1.User)
-    ], Verification.prototype, "user", void 0);
+    ], Message.prototype, "user", void 0);
     __decorate([
-        typeorm_1.BeforeInsert(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-    ], Verification.prototype, "createKey", null);
-    Verification = __decorate([
+        typeorm_1.Column({ type: "timestamp" }),
+        __metadata("design:type", Date)
+    ], Message.prototype, "createdAt", void 0);
+    __decorate([
+        typeorm_1.Column({ type: "timestamp" }),
+        __metadata("design:type", Date)
+    ], Message.prototype, "updatedAt", void 0);
+    Message = __decorate([
         typeorm_1.Entity()
-    ], Verification);
-    return Verification;
+    ], Message);
+    return Message;
 }(typeorm_1.BaseEntity));
-exports.default = Verification;
-//# sourceMappingURL=Verification.js.map
+exports.default = Message;
+//# sourceMappingURL=Message.js.map
