@@ -27,5 +27,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
+app.get("/todo");
 exports.default = app;
 //# sourceMappingURL=index.js.map

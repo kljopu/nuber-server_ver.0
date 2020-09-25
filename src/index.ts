@@ -33,4 +33,6 @@ app.use(
   })
 );
 
+app.get("/todo");
+
 export default app;

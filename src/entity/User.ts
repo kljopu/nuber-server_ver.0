@@ -15,7 +15,7 @@ const BCRYPT_ROUNDS = 10;
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
   @IsEmail()
@@ -25,13 +25,13 @@ export class User {
     type: "boolean",
     default: false,
   })
-  verifiedEmail: boolean;
+  verifiedEmail!: boolean;
 
   @Column({ type: "text" })
-  firstName: string;
+  firstName!: string;
 
   @Column({ type: "text" })
-  lastName: string;
+  lastName!: string;
 
   @Column({ type: "int" }) age: number;
 
@@ -39,19 +39,19 @@ export class User {
 
   @Column({ type: "text" }) phoneNumber: string;
 
-  @Column({ type: "boolean", default: false }) verifiedPhoneNumber: boolean;
+  @Column({ type: "boolean", default: false }) verifiedPhoneNumber!: boolean;
 
   @Column({ type: "text" }) profilePhoto: string;
 
-  @Column({ type: "timestamp" }) createdAt: Date;
+  @Column({ type: "timestamp" }) createdAt!: Date;
 
   @Column({ type: "timestamp" }) updatedAt: Date;
 
-  @Column({ type: "boolean", default: false }) isDriving: boolean;
+  @Column({ type: "boolean", default: false }) isDriving!: boolean;
 
-  @Column({ type: "boolean", default: false }) isRiding: boolean;
+  @Column({ type: "boolean", default: false }) isRiding!: boolean;
 
-  @Column({ type: "boolean", default: false }) isTaken: boolean;
+  @Column({ type: "boolean", default: false }) isTaken!: boolean;
 
   @Column({ type: "double precision", default: 0 })
   lastLng: number;
@@ -68,6 +68,10 @@ export class User {
 
   private hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, BCRYPT_ROUNDS);
+  }
+
+  public comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 
   @BeforeInsert()
