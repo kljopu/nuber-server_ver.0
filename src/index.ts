@@ -1,3 +1,7 @@
+//import envs
+import * as dotenv from "dotenv"
+dotenv.config({ path: "./../.env" })
+
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import * as express from "express";
@@ -5,9 +9,16 @@ import * as bodyParser from "body-parser";
 import * as compression from "compression";
 import * as cors from "cors";
 import * as morgan from "morgan";
+import authRoutes from "./routes/auth.routes"
 import "dotenv/config";
+import authRouter from "./routes/auth.routes";
 
-//connect typeORM MongoDb
+//Import Routes
+
+console.log(process.env.clientId);
+
+
+//connect typeORM MySQL
 createConnection()
   .then(() => {
     console.log("Database is Connected :)");
@@ -33,6 +44,21 @@ app.use(
   })
 );
 
-app.get("/todo");
+// set up routes
+
+//Routes
+app.get("/", (req, res) => {
+  res.render('home')
+});
+app.use('/auth', authRouter);
+
+const server = app.listen(app.get("port"), () =>
+  console.log(`Nuber App Listening on PORT ${app.get("port")}`)
+
+);
+
+// app.use(passport.initilaize())
+// app.use(passport.session())
+
 
 export default app;

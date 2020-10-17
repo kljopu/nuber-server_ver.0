@@ -8,7 +8,9 @@ var compression = require("compression");
 var cors = require("cors");
 var morgan = require("morgan");
 require("dotenv/config");
-//connect typeORM MongoDb
+var auth_routes_1 = require("./routes/auth.routes");
+//Import Routes
+//connect typeORM MySQL
 typeorm_1.createConnection()
     .then(function () {
     console.log("Database is Connected :)");
@@ -27,6 +29,16 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
-app.get("/todo");
+// set up routes
+//Routes
+app.get("/", function (req, res) {
+    res.render('home');
+});
+app.use('/auth', auth_routes_1.default);
+// const server = app.listen(app.get("port"), () =>
+//   console.log(`Nuber App Listening on PORT ${app.get("port")}`)
+// );
+// app.use(passport.initilaize())
+// app.use(passport.session())
 exports.default = app;
 //# sourceMappingURL=index.js.map

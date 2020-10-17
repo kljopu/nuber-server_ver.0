@@ -114,17 +114,21 @@ var User = /** @class */ (function () {
         __metadata("design:type", Number)
     ], User.prototype, "age", void 0);
     __decorate([
-        typeorm_1.Column({ type: "text" }),
+        typeorm_1.Column({ type: "text", nullable: true }),
         __metadata("design:type", String)
     ], User.prototype, "password", void 0);
     __decorate([
-        typeorm_1.Column({ type: "text" }),
+        typeorm_1.Column({ type: "text", nullable: true }),
         __metadata("design:type", String)
     ], User.prototype, "phoneNumber", void 0);
     __decorate([
         typeorm_1.Column({ type: "boolean", default: false }),
         __metadata("design:type", Boolean)
     ], User.prototype, "verifiedPhoneNumber", void 0);
+    __decorate([
+        typeorm_1.Column({ type: "text", nullable: true }),
+        __metadata("design:type", String)
+    ], User.prototype, "kakaoId", void 0);
     __decorate([
         typeorm_1.Column({ type: "text" }),
         __metadata("design:type", String)
@@ -161,6 +165,10 @@ var User = /** @class */ (function () {
         typeorm_1.Column({ type: "double precision", default: 0 }),
         __metadata("design:type", Number)
     ], User.prototype, "lastOrientation", void 0);
+    __decorate([
+        typeorm_1.Column({ type: "boolean", default: false }),
+        __metadata("design:type", Boolean)
+    ], User.prototype, "isSocial", void 0);
     __decorate([
         typeorm_1.ManyToOne(function (type) { return Chat_1.default; }, function (chat) { return chat.participants; }),
         __metadata("design:type", Chat_1.default)

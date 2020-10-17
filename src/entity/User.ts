@@ -40,11 +40,13 @@ export class User {
 
   @Column({ type: "int" }) age: number;
 
-  @Column({ type: "text" }) password: string;
+  @Column({ type: "text", nullable: true }) password: string;
 
-  @Column({ type: "text" }) phoneNumber: string;
+  @Column({ type: "text", nullable: true }) phoneNumber: string;
 
   @Column({ type: "boolean", default: false }) verifiedPhoneNumber!: boolean;
+
+  @Column({ type: "text", nullable: true }) kakaoId: string;
 
   @Column({ type: "text" }) profilePhoto: string;
 
@@ -66,6 +68,8 @@ export class User {
 
   @Column({ type: "double precision", default: 0 })
   lastOrientation: number;
+
+  @Column({ type: "boolean", default: false }) isSocial: boolean
 
   @ManyToOne((type) => Chat, (chat) => chat.participants)
   chat: Chat;

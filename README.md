@@ -6,7 +6,7 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 
 ### Public Controller
 
-- [ ] Sign In / Sign Up with Facebook, Kakao
+- [x] Sign In / Sign Up with Facebook, Kakao
 - [ ] Sign In with Email
 - [ ] Starts Phone Number Verification
 - [ ] Complete Phone Number Verification
@@ -16,6 +16,8 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 
 ### Private Controller
 
+- [ ] Generate JWT
+- [ ] Verify JWT
 - [ ] Verify Email
 - [ ] Get My Profile
 - [ ] Update My Profile
