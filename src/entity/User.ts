@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 import {
   BaseEntity,
   Column,
@@ -15,10 +15,11 @@ import Message from "./Message";
 import Verification from "./Verification";
 import Ride from "./Ride";
 
+
 const BCRYPT_ROUNDS = 10;
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -35,10 +36,10 @@ export class User {
   @Column({ type: "text" })
   firstName!: string;
 
-  @Column({ type: "text" })
-  lastName!: string;
+  @Column({ type: "text", nullable: true })
+  lastName: string;
 
-  @Column({ type: "int" }) age: number;
+  @Column({ type: "int", nullable: true }) age: number;
 
   @Column({ type: "text", nullable: true }) password: string;
 
@@ -48,7 +49,7 @@ export class User {
 
   @Column({ type: "text", nullable: true }) kakaoId: string;
 
-  @Column({ type: "text" }) profilePhoto: string;
+  @Column({ type: "text", nullable: true }) profilePhoto: string;
 
   @Column({ type: "timestamp" }) createdAt!: Date;
 
@@ -106,4 +107,20 @@ export class User {
       this.password = hashPassword;
     }
   }
+  get findByEmail(): string {
+    return `${this.email} ${this.email}`;
+  }
+
+  @BeforeInsert()
+  dateCreation() {
+    this.createdAt = new Date()
+    this.updatedAt = new Date()
+  }
+
+  @BeforeUpdate()
+  updateDateCreation() {
+    this.updatedAt = new Date()
+  }
+
+
 }

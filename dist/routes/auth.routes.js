@@ -22,10 +22,14 @@ authRouter.get('/logout', function (req, res) {
     console.log('Logging Out');
 });
 //auth with kakao
-authRouter.get('/kakao', function (req, res) {
-    //handle with passport
-    res.send('login with google');
-    console.log('login with google');
+authRouter.get('/kakao', passport.authenticate("kakao"));
+// (req, res) => {
+//     //handle with passport
+//     res.send('login with google')
+//     console.log('login with google');
+// }
+authRouter.get('/kakao/callback', passport.authenticate('kakao'), function (req, res) {
+    res.send('you reaced the callback URI');
 });
 authRouter.post("/login", passport.authenticate("local", {
     sucessRedirect: "/",
