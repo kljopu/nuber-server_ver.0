@@ -7,18 +7,18 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 ### Public Controller
 
 - [x] Sign In / Sign Up with Facebook, Kakao
-- [ ] Sign In with Email
+- [x] Sign In with Email
 - [ ] Starts Phone Number Verification
 - [ ] Complete Phone Number Verification
-- [ ] Sign Up with Email
+- [x] Sign Up with Email
 
 ---
 
 ### Private Controller
 
-- [ ] Generate JWT
-- [ ] Verify JWT
-- [ ] Verify Email
+- [x] Generate JWT
+- [x] Verify JWT
+- [x] Verify Email
 - [ ] Get My Profile
 - [ ] Update My Profile
 - [ ] Toggle Driving Mode

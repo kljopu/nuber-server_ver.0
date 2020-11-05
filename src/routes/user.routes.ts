@@ -1,10 +1,16 @@
 import { Router } from "express";
-const router = Router();
+import jwtChecker from "../controllers/user.jwtVerification"
+import mail from "../controllers/user.EmailSend"
+import emailVerification from "../controllers/user.EmailVerification"
 
-router.get("/users");
-router.get("/users/:id");
-router.post("/users");
-router.put("/users");
-router.delete("/users/:id");
 
-export default router;
+const userRouter = Router();
+
+userRouter.get("/very", function (res, req) {
+    jwtChecker
+})
+userRouter.post("/email", jwtChecker, mail);
+
+userRouter.post("/email/check", emailVerification)
+
+export default userRouter;

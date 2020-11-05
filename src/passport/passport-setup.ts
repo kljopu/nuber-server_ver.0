@@ -5,7 +5,7 @@ import * as KakaoStrategy from "passport-kakao"
 import { getConnection, getRepository } from "typeorm"
 import * as bcrypt from "bcrypt"
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt"
-import jwt from "jsonwebtoken"
+import JWT from "jsonwebtoken"
 import { User } from "../entity/User"
 
 const salt_rounds = process.env.SALTROUNDS
@@ -46,7 +46,7 @@ passport.use('kakao',
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: process.env.CALLBACKURL
 
-    }, (async (accessToken, refreshToken, profile, done, req: Request, res: Response) => {
+    }, (async (accessToken, refreshToken, profile, done, req: Request, res: Response,) => {
         // passport callback function
 
         //all info in profile
@@ -59,24 +59,25 @@ passport.use('kakao',
             if (userFound) {
                 //jwt 토큰 발급
                 console.log('user is already exists');
-                const generatedJWTToken = id => jwt.sign({
-                    userId: userFound.id,
-                    email: userFound.email
-                }, process.env.JWT_SECRET,
-                    {
-                        expiresIn: '360m'
-                    }
-                )
-                // return done(generatedJWTToken)
-                passport.serializeUser((userFound, done) => {
-                    return res.json({
-                        token: generatedJWTToken,
-                        userId: userFound.id,
-                        isSocial: userFound.isSocial
-                    })
-                    // done(null, generatedJWTToken)
-                })
-                // done(null, userFound)
+
+                // passport.serializeUser((userFound, done) => {
+                //     return res.json({
+                //         token: generatedJWTToken,
+                //         userId: userFound.id,
+                //         isSocial: userFound.isSocial
+                //     })
+                //      done(null, generatedJWTToken)
+                // })
+                // const generatedJWTToken =
+                //     jwt.sign({
+                //         userId: userFound.id,
+                //         email: userFound.email
+                //     }, process.env.JWT_SECRET,
+                //         {
+                //             expiresIn: '360m'
+                //         }
+                //     )
+                done(null, userFound)
 
 
             } else {
@@ -128,43 +129,58 @@ passport.use('kakao',
 //     }
 // }
 
-passport.use("local-signIn", new LocalStrategy.Strategy({
-    usernameField: 'email',
-    passwordField: 'password'
-}, async function localVerify(email, passport, done, req: Request, res: Response) {
-    try {
-        const user = await User.findOne({ email: req.body.email })
-        if (user) {
-            console.log("user exists");
+passport.use("local-signIn",
+    new LocalStrategy.Strategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true
+    }, async (req, email, password, done) => {
+        try {
+            const user = await User.findOne({ email: req.body.email })
+            if (user) {
+                console.log("user exists");
+                const veriPass = bcrypt.compare(password, user.password, (error, info) => {
+                    if (info) {
+                        return done(null, user)
+                    } else {
+                        return done(null, false, { "message": "INVAILED PASSWORD" })
+                    }
+                })
 
-            done(null, user)
+            } else {
+                console.log("user does not exist");
+                return done(null, false)
+            }
 
-        } else {
-            console.log("user does not exist");
-            res.status(400).json("user doesn't exist")
-            return done(null, false)
+        } catch (error) {
+            console.log("error!!!!: ", error);
+
         }
-
-    } catch (error) {
-        console.log("error!!!!: ", error);
-
-    }
-}))
+    }))
 
 passport.use("local-signUp",
-    new LocalStrategy.Strategy({ usernameField: 'email', passwordField: 'password', passReqToCallback: true }, async (req, email, password, done, res: Response) => {
+    new LocalStrategy.Strategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true
+    }, async (req, email, password, done, res: Response) => {
         try {
-            console.log(req.body);
+            console.log("body:  ", req.body);
             const user = await User.findOne({ email: req.body.email })
-            console.log(salt_rounds);
-
             // const hasedPwd = await bcrypt.hash(req.body.password, Number(salt_rounds))
             console.log(user);
 
             if (user) {
                 // sign up fails 
                 console.log("user exists");
-                return done(null, false)
+                // const verifyPassword = user.comparePassword(password)
+                // if (!verifyPassword) {
+                //     return done(null, false, { "message": "INVALID PASSWORD" })
+                // } else {
+                //     return done(null, user)
+                // }
+
+                done(null, false)
             } else {
                 // create new user
                 const newUser = new User()
@@ -179,7 +195,7 @@ passport.use("local-signUp",
 
         } catch (error) {
             console.log(error);
-            done(null, error)
+            return done(null, error)
         }
     }))
 

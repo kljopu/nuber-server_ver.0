@@ -27,11 +27,9 @@ export class User extends BaseEntity {
   @IsEmail()
   email: string;
 
-  @Column({
-    type: "boolean",
-    default: false,
-  })
-  verifiedEmail!: boolean;
+  @Column({ type: "boolean", default: false, }) verifiedEmail!: boolean;
+
+  @Column({ type: "boolean", default: false }) verifiedPhoneNumber!: boolean;
 
   @Column({ type: "text" })
   firstName!: string;
@@ -44,8 +42,6 @@ export class User extends BaseEntity {
   @Column({ type: "text", nullable: true }) password: string;
 
   @Column({ type: "text", nullable: true }) phoneNumber: string;
-
-  @Column({ type: "boolean", default: false }) verifiedPhoneNumber!: boolean;
 
   @Column({ type: "text", nullable: true }) kakaoId: string;
 
@@ -69,6 +65,12 @@ export class User extends BaseEntity {
 
   @Column({ type: "double precision", default: 0 })
   lastOrientation: number;
+
+  @Column({ type: "double", default: Math.floor(Math.random() * 1000000) })
+  emailVerificationCode: number;
+
+  @Column({ type: "double", default: Math.floor(Math.random() * 1000000) })
+  phonelVerificationCode: number;
 
   @Column({ type: "boolean", default: false }) isSocial: boolean
 
@@ -97,6 +99,9 @@ export class User extends BaseEntity {
 
   public comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
+  }
+  public veriPass(password: string): boolean {
+    return bcrypt.compare(password, this.password)
   }
 
   @BeforeInsert()

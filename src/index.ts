@@ -1,21 +1,24 @@
 //import envs
 import * as dotenv from "dotenv"
 dotenv.config({ path: "./../.env" })
+import "dotenv/config";
 
-import "reflect-metadata";
-import { createConnection } from "typeorm";
 import * as express from "express";
+import { createConnection } from "typeorm";
+import "reflect-metadata";
+import * as session from "express-session"
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser"
 import * as compression from "compression";
 import * as cors from "cors";
 import * as morgan from "morgan";
-import "dotenv/config";
+
+// router 
 import authRouter from "./routes/auth.routes";
+import userRouter from "./routes/user.routes";
 import * as passport from "passport"
-import * as session from "express-session"
 const passportSetup = require('./passport/passport-setup')
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt"
+
 
 //connect typeORM MySQL
 createConnection()
@@ -70,6 +73,7 @@ app.get("/", (req, res) => {
   res.render('home')
 });
 app.use('/auth', authRouter);
+app.use('/user', userRouter)
 
 const server = app.listen(app.get("port"), () =>
   console.log(`Nuber App Listening on PORT ${app.get("port")}`)
