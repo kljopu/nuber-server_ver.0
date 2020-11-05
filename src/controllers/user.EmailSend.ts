@@ -129,6 +129,5 @@ const mail = (req, res) => {
   }
 };
 
-// mail().catch(console.error);
 export default mail
 

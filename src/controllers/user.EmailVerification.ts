@@ -8,7 +8,6 @@ const emailVerification = async (req, res) => {
         return res.status(403).json({ "message": "TOKEN IS MISSING" })
     }
     const user = await User.findOne({ emailVerificationCode: token })
-    // console.log("user: ", user);
     try {
         if (user) {
             getConnection()

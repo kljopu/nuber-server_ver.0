@@ -34,7 +34,6 @@ const verifyUser = async (payload, done) => {
     } catch (error) {
 
     }
-
 }
 
 // const User = User
@@ -49,37 +48,12 @@ passport.use('kakao',
     }, (async (accessToken, refreshToken, profile, done, req: Request, res: Response,) => {
         // passport callback function
 
-        //all info in profile
-        // console.log(profile);
-
-        // console.log(profile._json.kakao_account.email, 'user email');
         try {
             const userFound = await User.findOne({ email: profile._json.kakao_account.email });
 
             if (userFound) {
-                //jwt 토큰 발급
                 console.log('user is already exists');
-
-                // passport.serializeUser((userFound, done) => {
-                //     return res.json({
-                //         token: generatedJWTToken,
-                //         userId: userFound.id,
-                //         isSocial: userFound.isSocial
-                //     })
-                //      done(null, generatedJWTToken)
-                // })
-                // const generatedJWTToken =
-                //     jwt.sign({
-                //         userId: userFound.id,
-                //         email: userFound.email
-                //     }, process.env.JWT_SECRET,
-                //         {
-                //             expiresIn: '360m'
-                //         }
-                //     )
                 done(null, userFound)
-
-
             } else {
                 console.log('user not found');
                 const newuser = new User()
@@ -91,22 +65,6 @@ passport.use('kakao',
                 newuser.profilePhoto = profile._json.properties.profile_image
                 newuser.save()
                 console.log('user saved');
-
-                //jwt token
-                // const generatedJWTToken = jwt.sign({
-                //     userId: user.id,
-                //     email: user.email
-                // }, process.env.JWT_SECRET,
-                //     {
-                //         expiresIn: '360m'
-                //     }
-                // )
-                // res.status(200).json({
-                //     token: generatedJWTToken,
-                //     userId: user.id,
-                //     isSocial: user.isSocial
-                // })
-                // return done(generatedJWTToken)
                 passport.serializeUser((newuser, done) => {
                     done(null, newuser)
                 })
@@ -118,16 +76,6 @@ passport.use('kakao',
             done(error)
         }
     })))
-// async function localVerify(email, password, done) {
-//     try {
-//         const user = User.findOne(email)
-//         if (!user) return done(null, false)
-//         const isSamePassword = await bcrypt.compare(password, (await user).password)
-//         if (!isSamePassword) return done(null, false)
-//     } catch (error) {
-//         done(error)
-//     }
-// }
 
 passport.use("local-signIn",
     new LocalStrategy.Strategy({
@@ -167,19 +115,11 @@ passport.use("local-signUp",
         try {
             console.log("body:  ", req.body);
             const user = await User.findOne({ email: req.body.email })
-            // const hasedPwd = await bcrypt.hash(req.body.password, Number(salt_rounds))
             console.log(user);
 
             if (user) {
                 // sign up fails 
                 console.log("user exists");
-                // const verifyPassword = user.comparePassword(password)
-                // if (!verifyPassword) {
-                //     return done(null, false, { "message": "INVALID PASSWORD" })
-                // } else {
-                //     return done(null, user)
-                // }
-
                 done(null, false)
             } else {
                 // create new user
