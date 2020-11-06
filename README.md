@@ -19,7 +19,7 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 - [x] Generate JWT
 - [x] Verify JWT
 - [x] Verify Email
-- [ ] Get My Profile
+- [x] Get My Profile
 - [ ] Update My Profile
 - [ ] Toggle Driving Mode
 - [ ] Report Location / Orientation

@@ -17,7 +17,9 @@ import * as morgan from "morgan";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import * as passport from "passport"
-const passportSetup = require('./passport/passport-setup')
+// const passportSetup = require('./passport/passport-setup')
+
+import upload from "../src/controllers/user.Profile"
 
 
 //connect typeORM MySQL
@@ -37,7 +39,7 @@ app.use(compression());
 app.use(express.json());
 app.use(
   express.urlencoded({
-    extended: false,
+    extended: true,
   })
 );
 
