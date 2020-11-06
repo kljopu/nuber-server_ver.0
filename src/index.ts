@@ -19,7 +19,8 @@ import userRouter from "./routes/user.routes";
 import * as passport from "passport"
 // const passportSetup = require('./passport/passport-setup')
 
-import upload from "../src/controllers/user.Profile"
+// import storage from "../src/controllers/user.Profile"
+// import * as multer from "multer"
 
 
 //connect typeORM MySQL
@@ -36,13 +37,13 @@ app.set("port", process.env.PORT || 3000);
 app.use(compression());
 
 // body-parser
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(
-  express.urlencoded({
-    extended: true,
+  bodyParser.urlencoded({
+    extended: false,
   })
 );
-
+app.use(express.static('static'))
 app.use(cookieParser())
 app.use(morgan("dev"));
 app.use(

@@ -10,22 +10,32 @@ export const S3 = new AWS.S3({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 })
 
-const storage = multer.diskStorage({
+export const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "/Users/user/dev")
+        cb(null, "uploads/")
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
+        const regExFileName = /([\w\d_-]*)\.?[^\\\/]*$/i,
+            regExFileNameExtension = /\.[0-9a-z]{1,5}$/i,
+            fileNameBase = file.originalname.match(regExFileName)[1],
+            fileNameExtension = file.originalname.match(regExFileNameExtension)[0],
+            fileName = fileNameBase + "-" + Date.now() + fileNameExtension
+
+        cb(null, fileName)
     }
 })
-export const upload = multer({
-    storage: storage
-})
-
-// export const multer_s3 = multerS3({
-//     // s3: s3,
-
+// export const upload = multer({
+//     storage
 // })
+
+export const multer_s3 = multer({
+    storage: multerS3({
+        s3: S3,
+        acl: "public-read",
+        bucket: "nuber-s3"
+    })
+
+})
 
 // GET user Profile
 export const getUserProfile = async (req, res) => {
@@ -106,4 +116,5 @@ export const bodyChecker = (req, res) => {
     console.log("file: ", file);
     return res.json("done")
 }
-export default upload
+// export default upload
+export default storage
