@@ -17,10 +17,6 @@ import * as morgan from "morgan";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import * as passport from "passport"
-// const passportSetup = require('./passport/passport-setup')
-
-// import storage from "../src/controllers/user.Profile"
-// import * as multer from "multer"
 
 
 //connect typeORM MySQL
@@ -43,7 +39,9 @@ app.use(
     extended: false,
   })
 );
-app.use(express.static('static'))
+// app.use(express.urlencoded())
+// app.use(express.multipart())
+// app.use(express.static('static'))
 app.use(cookieParser())
 app.use(morgan("dev"));
 app.use(

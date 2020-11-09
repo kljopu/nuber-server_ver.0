@@ -7,32 +7,25 @@ import * as multerS3 from "multer-s3"
 // aws s3 setting
 export const S3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEYID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2'
 })
 
-export const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/")
-    },
-    filename: (req, file, cb) => {
-        const regExFileName = /([\w\d_-]*)\.?[^\\\/]*$/i,
-            regExFileNameExtension = /\.[0-9a-z]{1,5}$/i,
-            fileNameBase = file.originalname.match(regExFileName)[1],
-            fileNameExtension = file.originalname.match(regExFileNameExtension)[0],
-            fileName = fileNameBase + "-" + Date.now() + fileNameExtension
 
-        cb(null, fileName)
-    }
-})
-// export const upload = multer({
-//     storage
-// })
 
 export const multer_s3 = multer({
     storage: multerS3({
         s3: S3,
         acl: "public-read",
-        bucket: "nuber-s3"
+        bucket: "nuber-s3",
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName: file.fieldname })
+        },
+        key: function (req, file, cb) {
+            console.log({ file: file });
+            cb(null, file.originalname)
+        }
     })
 
 })
@@ -81,10 +74,8 @@ export const updateUserProfile = async (req, res) => {
         if (req.body === null) {
             return res.status(400).json({ "message": "MISSING INPUT" })
         }
-        if (email == null) {
-            return res.status(400).json({ "message": "MISSING EMAIL INPUT" })
-        }
-        getConnection()
+
+        const normalUpdater = getConnection()
             .createQueryBuilder()
             .update(User)
             .set({
@@ -95,6 +86,56 @@ export const updateUserProfile = async (req, res) => {
                 profilePhoto: profilePhoto
             })
             .where({ id: user.id }).execute()
+
+        const emailChangeUpdater =
+            getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    lastName: lastName,
+                    age: age,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    profilePhoto: profilePhoto,
+                    verifiedEmail: false,
+                })
+                .where({ id: user.id }).execute()
+
+        const phoneChangeUpdater =
+            getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    lastName: lastName,
+                    age: age,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    profilePhoto: profilePhoto,
+                    verifiedPhoneNumber: false
+                })
+                .where({ id: user.id }).execute()
+
+        const BothChanger =
+            getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    lastName: lastName,
+                    age: age,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    profilePhoto: profilePhoto,
+                    verifiedEmail: false,
+                    verifiedPhoneNumber: false
+                })
+                .where({ id: user.id }).execute()
+        if (profilePhoto !== user.profilePhoto) {
+            if (email !== user.email) {
+
+            } else if (email == 2) {
+
+            }
+        }
 
         console.log({ "UPDATED USER": user });
         return res.status(200).json({
@@ -109,12 +150,12 @@ export const updateUserProfile = async (req, res) => {
     }
 }
 
-export const bodyChecker = (req, res) => {
-    const body = req.body
-    const file = req.file
-    console.log("body:  ", body);
-    console.log("file: ", file);
-    return res.json("done")
-}
+// export const bodyChecker = (req, res) => {
+//     const body = req.body
+//     const file = req.file
+//     console.log("body:  ", body);
+//     console.log("file: ", file);
+//     return res.json("done")
+// }
 // export default upload
-export default storage
+// export default storage

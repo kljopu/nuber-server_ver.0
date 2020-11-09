@@ -8,3 +8,6 @@ ormconfig.json
 .dotenv
 ormconfig.json
 .env
+.yarn.lock
+.yarn.error.log
+.ormconfig.json
