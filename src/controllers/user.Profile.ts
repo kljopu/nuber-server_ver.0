@@ -12,14 +12,6 @@ export const S3 = new AWS.S3({
     region: 'ap-northeast-2'
 })
 
-// S3.deleteObject({
-//     Bucket: process.env.BUCKETNAME,
-//     Key: ''
-// }, function (err, data) {
-//     console.log("error: ", err);
-
-// })
-
 export const s3_delete = (req, res, next) => {
     // 기존 profilePhto file S3에서 삭제
     const currentUser = req.user
@@ -109,73 +101,8 @@ export const updateUserProfile = async (req, res) => {
         if (req.body === null) {
             return res.status(400).json({ "message": "MISSING INPUT" })
         }
-        /*
-        const normalUpdater = getConnection()
-            .createQueryBuilder()
-            .update(User)
-            .set({
-                lastName: lastName,
-                age: age,
-                phoneNumber: phoneNumber,
-                email: email,
-                profilePhoto: profilePhoto
-            })
-            .where({ id: user.id }).execute()
 
-        const emailChangeUpdater =
-            getConnection()
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    lastName: lastName,
-                    age: age,
-                    phoneNumber: phoneNumber,
-                    email: email,
-                    profilePhoto: profilePhoto,
-                    verifiedEmail: false,
-                })
-                .where({ id: user.id }).execute()
-
-        const phoneChangeUpdater =
-            getConnection()
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    lastName: lastName,
-                    age: age,
-                    phoneNumber: phoneNumber,
-                    email: email,
-                    profilePhoto: profilePhoto,
-                    verifiedPhoneNumber: false
-                })
-                .where({ id: user.id }).execute()
-
-        const BothChanger =
-            getConnection()
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    lastName: lastName,
-                    age: age,
-                    phoneNumber: phoneNumber,
-                    email: email,
-                    profilePhoto: profilePhoto,
-                    verifiedEmail: false,
-                    verifiedPhoneNumber: false
-                })
-                .where({ id: user.id }).execute()
-        */
-
-        // client가 photo를 바꾸지 않더라도 front단에서 무조건 적으로 file을 보낸다.
-        // 기존 profilePhto file S3에서 삭제
-        // S3.deleteObject({
-        //     Bucket: process.env.BUCKETNAME,
-        //     Key: user.profilePhoto
-        // }, function (err, data) {
-        //     console.log("error: ", err);
-        // })
         if (req.file.key !== "default-avatar.png") {
-            const deleteFile = user.profilePhoto
             S3.deleteObject({
                 Bucket: process.env.BUCKETNAME,
                 Key: user.profilePhoto.split(".com/")[1]
@@ -183,8 +110,10 @@ export const updateUserProfile = async (req, res) => {
                 console.log("delete error: ", err);
             })
         }
+
         console.log("file name from multer: ", req.file.key)
         const emailURL = process.env.S3_URL + req.file.key
+
         await user.email !== email ?
             (user.phoneNumber !== phoneNumber ?
                 // email changed phone changed
@@ -256,13 +185,3 @@ export const updateUserProfile = async (req, res) => {
         })
     }
 }
-
-// export const bodyChecker = (req, res) => {
-//     const body = req.body
-//     const file = req.file
-//     console.log("body:  ", body);
-//     console.log("file: ", file);
-//     return res.json("done")
-// }
-// export default upload
-// export default storage
