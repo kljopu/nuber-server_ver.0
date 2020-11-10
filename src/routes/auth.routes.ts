@@ -4,6 +4,7 @@ import * as KakaoStrategy from "passport-kakao"
 import * as passportSetup from "../passport/passport-setup"
 import * as JWT from "jsonwebtoken"
 import * as passportLocal from "passport-local"
+import config from "../passport/passport-setup"
 
 const localSignUp = require('../controllers/localSignUp')
 const authRouter = express.Router()
@@ -21,9 +22,15 @@ const generatedJWTToken = (user) => {
     return token
 }
 
+// initialize passport config
+/*
+왜 index.ts 나 passport-setup에서 initialize 했는데 안되는지는 이해가 안감
+*/
+config()
+
 // auth login
-authRouter.post('/login', function (req, res) {
-    passport.authenticate('local-signIn', { session: false }, (err, user, jwt) => {
+authRouter.post('/login', function (req, res, next) {
+    passport.authenticate('local-signIn', (err, user, info) => {
         console.log("is here?");
         if (err) {
             return res.status(400).json({
@@ -46,7 +53,7 @@ authRouter.post('/login', function (req, res) {
             "message": `${signInUserEmail} LOGIN SUCCEED`,
             "token": token
         })
-    })(req, res);
+    })(req, res, next);
 });
 
 //auth logout
@@ -79,29 +86,6 @@ authRouter.get('/kakao/callback', passport.authenticate('kakao'), function (req,
     })(req, res);
 })
 
-// authRouter.post(
-//     "/signup", function (req, res) {
-//         passport.authenticate('local-signUp', function (err, user, info) {
-//             if (err) {
-//                 res.status(404).json(err);
-//                 return;
-//             }
-
-//             if (user) {
-//                 console.log("in if");
-
-//                 const token = user.generateJwt();
-//                 res.status(200);
-//                 res.json({
-//                     userInfo: user,
-//                     token: token
-//                 });
-//             } else {
-//                 res.status(401).json(info);
-//             }
-//         })
-//     })
-
 authRouter.post('/sign-up', function (req, res, next) {
     passport.authenticate('local-signUp', { session: false }, (err, user, info) => {
         // error send
@@ -120,7 +104,7 @@ authRouter.post('/sign-up', function (req, res, next) {
             "message": "SIGN-UP SUCCEED",
             "user": user
         })
-    })(req, res);
+    })(req, res, next);
 });
 
 

@@ -11,7 +11,7 @@ const jwtChecker = (req, res, next) => {
             const decoded = JWT.verify(token, process.env.JWT_SECRET)
 
             console.log(decoded);
-            const user = User.findOne(decoded.id).then((user) => {
+            const user = User.findOne(decoded.userId).then((user) => {
                 req.user = user
                 next()
             }).catch((err) => {
@@ -25,7 +25,7 @@ const jwtChecker = (req, res, next) => {
 
     } catch (error) {
         console.log("error: ", error);
-        return (error)
+        return res.status(401).json("INVALID TOKEN")
     }
 }
 

@@ -41,7 +41,7 @@ app.use(
 );
 // app.use(express.urlencoded())
 // app.use(express.multipart())
-// app.use(express.static('static'))
+app.use(express.static('static'))
 app.use(cookieParser())
 app.use(morgan("dev"));
 app.use(
