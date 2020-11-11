@@ -8,8 +8,8 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 
 - [x] Sign In / Sign Up with Facebook, Kakao
 - [x] Sign In with Email
-- [ ] Starts Phone Number Verification
-- [ ] Complete Phone Number Verification
+- [x] Starts Phone Number Verification
+- [x] Complete Phone Number Verification
 - [x] Sign Up with Email
 
 ---
