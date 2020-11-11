@@ -16,6 +16,7 @@ import * as morgan from "morgan";
 // router 
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
+import serviceRouter from "./routes/service.routes"
 import * as passport from "passport"
 
 
@@ -75,6 +76,7 @@ app.get("/", (req, res) => {
 });
 app.use('/auth', authRouter);
 app.use('/user', userRouter)
+app.use('/service', serviceRouter)
 
 const server = app.listen(app.get("port"), () =>
   console.log(`Nuber App Listening on PORT ${app.get("port")}`)

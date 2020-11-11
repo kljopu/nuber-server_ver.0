@@ -20,7 +20,7 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 - [x] Verify JWT
 - [x] Verify Email
 - [x] Get My Profile
-- [ ] Update My Profile
+- [x] Update My Profile
 - [ ] Toggle Driving Mode
 - [ ] Report Location / Orientation
 - [ ] Add Place
@@ -29,7 +29,7 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 - [ ] See Nearby Drivers
 - [ ] Subscribe Nearby Drivers
 - [ ] Request a Ride
-- [ ] Get Nearby Ride Request
+- [x] Get Nearby Ride Request
 - [ ] Subscribe to Nearby Ride Request
 - [ ] Subscribe to Ride Status
 - [ ] Get Chat Room Messages
