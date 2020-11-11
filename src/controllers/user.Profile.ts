@@ -127,7 +127,9 @@ export const updateUserProfile = async (req, res) => {
                         email: email,
                         profilePhoto: emailURL,
                         verifiedEmail: false,
-                        verifiedPhoneNumber: false
+                        verifiedPhoneNumber: false,
+                        emailVerificationCode: Math.floor(Math.random() * 1000000),
+                        phonelVerificationCode: Math.floor(Math.random() * 1000000)
                     }).where({ id: user.id }).execute()
                 :
                 // email changed phone unchanged
@@ -141,6 +143,7 @@ export const updateUserProfile = async (req, res) => {
                         email: email,
                         profilePhoto: emailURL,
                         verifiedEmail: false,
+                        emailVerificationCode: Math.floor(Math.random() * 1000000)
                     })
                     .where({ id: user.id }).execute()
             ) :
@@ -155,7 +158,8 @@ export const updateUserProfile = async (req, res) => {
                         phoneNumber: phoneNumber,
                         email: email,
                         profilePhoto: emailURL,
-                        verifiedPhoneNumber: false
+                        verifiedPhoneNumber: false,
+                        phonelVerificationCode: Math.floor(Math.random() * 1000000)
                     })
                     .where({ id: user.id }).execute()
                 :

@@ -2,10 +2,9 @@ import { Router } from "express"
 import jwtChecker from "../controllers/user.jwtVerification"
 import mail from "../controllers/user.EmailSend"
 import emailVerification from "../controllers/user.EmailVerification"
+import { sendSMS, phoneChecker } from "../controllers/user.PhoneVerification"
 import { updateUserProfile, getUserProfile, multer_s3, s3_delete } from "../controllers/user.Profile"
-// import s3_del from "../controllers/user.Profile"
 import { Request } from "express"
-import * as multer from "multer"
 
 
 interface MulterRequest extends Request {
@@ -24,6 +23,8 @@ userRouter.post("/email/check", emailVerification, function (req, res) {
     //후에 프론트 메인으로 redirect
     res.redirect("/")
 })
+userRouter.get("/phone", jwtChecker, sendSMS)
+userRouter.post("/phone/check", jwtChecker, phoneChecker)
 
 // profile
 const upload = multer_s3
