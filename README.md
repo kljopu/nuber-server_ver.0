@@ -21,7 +21,7 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 - [x] Verify Email
 - [x] Get My Profile
 - [x] Update My Profile
-- [ ] Toggle Driving Mode
+- [x] Toggle Driving Mode
 - [ ] Report Location / Orientation
 - [ ] Add Place
 - [ ] Edit Place
