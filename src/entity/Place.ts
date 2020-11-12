@@ -1,5 +1,5 @@
 import {
-  BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, BeforeUpdate
+  BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, BeforeUpdate, RelationId
 } from "typeorm";
 import { User } from "./User"
 
@@ -24,6 +24,9 @@ export class Place extends BaseEntity {
 
   @ManyToOne((type) => User, (user) => user.places)
   user!: User;
+
+  @RelationId((place: Place) => place.user)
+  userId: number;
 
   @Column({ type: "timestamp" }) createdAt!: Date;
 

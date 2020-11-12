@@ -22,10 +22,11 @@ Server for the (N)Uber Clone Using NodeJS, MySQL, Typescript
 - [x] Get My Profile
 - [x] Update My Profile
 - [x] Toggle Driving Mode
-- [ ] Report Location / Orientation
-- [ ] Add Place
+- [x] Report Location / Orientation
+- [x] Add Place
 - [ ] Edit Place
 - [ ] Delete Place
+- [ ] Get My Places
 - [ ] See Nearby Drivers
 - [ ] Subscribe Nearby Drivers
 - [ ] Request a Ride
