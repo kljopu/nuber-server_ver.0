@@ -1,4 +1,4 @@
-import { User } from "../entity/User"
+import { User } from "../../entity/User"
 import { getConnection, Db } from "typeorm"
 import * as AWS from "aws-sdk"
 import * as multer from "multer"

@@ -4,6 +4,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  BeforeInsert,
+  BeforeUpdate
 } from "typeorm";
 import { rideStatus } from "src/types/types";
 import { User } from "./User";
@@ -23,7 +25,7 @@ export enum RideStatus {
 }
 
 @Entity()
-class Ride extends BaseEntity {
+export class Ride extends BaseEntity {
   @PrimaryGeneratedColumn() id!: number;
 
   @Column({
@@ -68,6 +70,15 @@ class Ride extends BaseEntity {
 
   @ManyToOne((type) => User, (user) => user.ridesAsDriver)
   driver!: User;
-}
 
-export default Ride;
+  @BeforeInsert()
+  dateCreation() {
+    this.createdAt = new Date()
+    this.updatedAt = new Date()
+  }
+
+  @BeforeUpdate()
+  updateDateCreation() {
+    this.updatedAt = new Date()
+  }
+}

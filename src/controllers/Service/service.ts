@@ -1,5 +1,6 @@
-import { User } from "../entity/User"
+import { User } from "../../entity/User"
 import { Between, getConnection } from "typeorm"
+import clearNullArgs from "../../utils/ClearNullargs"
 
 
 // GET Nearby Driver
@@ -38,17 +39,13 @@ export const toggleToDriving = async (req, res, next) => {
 
     try {
         if (driver.verifiedPhoneNumber !== false) {
-            // toggle on
-            getConnection()
-                .createQueryBuilder()
-                .update(User)
-                .set({
-                    isDriving: true
-                }).where({ id: driver.id }).execute().then(r => {
-                    console.log(r);
-                })
+            // toggle on / off
+            const toggle: boolean = driver.isDriving == true ? driver.isDriving = false : driver.isDriving = true
+            driver.save().then(r => {
+                console.log(r);
+            })
             return res.status(200).json({
-                "message": "TOGGLE ON",
+                "message": `TOGGLE ${toggle}`,
             })
         } else {
             return res.status(401).json({
@@ -58,7 +55,29 @@ export const toggleToDriving = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({
             "message": "INTERNAL ERROR",
-            "error": error
+            "error": error.message
+        })
+    }
+}
+
+// post report location
+export const ReportMovement = async (req, res) => {
+    const user: User = req.user
+    const notNull = clearNullArgs(req.body.args)
+    try {
+        console.log(notNull);
+        await User.update({ id: user.id }, { ...notNull }).then(r => {
+            console.log(r);
+        })
+
+        return res.status(200).json({
+            "message": "REPORT LOCATION",
+            "location": notNull
+        })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            "message": "INTERNAL SERVER ERROR"
         })
     }
 }

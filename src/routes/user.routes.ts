@@ -1,9 +1,9 @@
 import { Router } from "express"
-import jwtChecker from "../controllers/user.jwtVerification"
-import mail from "../controllers/user.EmailSend"
-import emailVerification from "../controllers/user.EmailVerification"
-import { sendSMS, phoneChecker } from "../controllers/user.PhoneVerification"
-import { updateUserProfile, getUserProfile, multer_s3, s3_delete } from "../controllers/user.Profile"
+import jwtChecker from "../controllers/User/user.jwtVerification"
+import mail from "../controllers/User/user.EmailSend"
+import emailVerification from "../controllers/User/user.EmailVerification"
+import { sendSMS, phoneChecker } from "../controllers/User/user.PhoneVerification"
+import { updateUserProfile, getUserProfile, multer_s3, s3_delete } from "../controllers/User/user.Profile"
 import { Request } from "express"
 
 

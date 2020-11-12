@@ -5,6 +5,7 @@ import * as passportSetup from "../passport/passport-setup"
 import * as JWT from "jsonwebtoken"
 import * as passportLocal from "passport-local"
 import config from "../passport/passport-setup"
+import * as bcrypt from "bcrypt"
 
 const localSignUp = require('../controllers/localSignUp')
 const authRouter = express.Router()
@@ -40,7 +41,8 @@ authRouter.post('/login', function (req, res, next) {
         } else if (!user) {
             //password error
             return res.status(401).json({
-                "message": "UNAUTHORIZED"
+                "message": "UNAUTHORIZED",
+                "info": info
             })
         }
         // login succeed and jwt deploy
@@ -107,5 +109,18 @@ authRouter.post('/sign-up', function (req, res, next) {
     })(req, res, next);
 });
 
+authRouter.get("/test", (req, res) => {
+    const pass1 = req.body.pass1
+    const pass2 = req.body.pass2
+    const hashed1 = bcrypt.compare("wnsepddl123", "$2b$10$oWq7RSgTQfxNhknl1cccROGiRs1fXukojOd4VyyhMTRPFtYDyrcVe", (err, hash) => {
+        console.log(hash);
+
+    })
+    const hashed2 = bcrypt.hash("wnsepddl123", 10, (err, hash) => {
+        console.log(hash);
+
+    })
+    console.log({ pass1: hashed1, pass2: hashed2 });
+})
 
 export default authRouter

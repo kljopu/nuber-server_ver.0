@@ -13,7 +13,8 @@ import { IsEmail } from "class-validator";
 import Chat from "./Chat";
 import Message from "./Message";
 import Verification from "./Verification";
-import Ride from "./Ride";
+import { Ride } from "./Ride";
+import { Place } from "./Place"
 
 
 const BCRYPT_ROUNDS = 10;
@@ -89,6 +90,10 @@ export class User extends BaseEntity {
   @OneToMany((type) => Ride, (ride) => ride.driver)
   ridesAsDriver: Ride[];
 
+  @OneToMany((type) => Place, (place) => place.user)
+  places: Place[];
+
+
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }
@@ -126,6 +131,4 @@ export class User extends BaseEntity {
   updateDateCreation() {
     this.updatedAt = new Date()
   }
-
-
 }

@@ -5,15 +5,10 @@ import * as KakaoStrategy from "passport-kakao"
 import { getConnection, getRepository } from "typeorm"
 import * as bcrypt from "bcrypt"
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt"
-import JWT from "jsonwebtoken"
 import { User } from "../entity/User"
 
 const salt_rounds = process.env.SALTROUNDS
 
-// mysql이라 구조상 이렇게 import User from '../entity/User'은 왜 안되지?
-// const User = require('../entity/User')
-
-// const userFound = User.findOne({ email: kkkk});
 export default () => {
     passport.serializeUser((user, done) => {
         done(null, user.email)
@@ -35,8 +30,6 @@ export default () => {
 
         }
     }
-
-    // const User = User
 
     passport.use('kakao',
         new KakaoStrategy.Strategy({
@@ -89,7 +82,7 @@ export default () => {
                 const user = await User.findOne({ email: req.body.email })
                 if (user) {
                     console.log("user exists");
-                    const veriPass = bcrypt.compare(password, user.password, (error, info) => {
+                    bcrypt.compare(password, user.password, (error, info) => {
                         if (info) {
                             return done(null, user)
                         } else {

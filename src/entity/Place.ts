@@ -1,7 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, BeforeInsert, BeforeUpdate
+} from "typeorm";
+import { User } from "./User"
 
 @Entity()
-class Place extends BaseEntity {
+export class Place extends BaseEntity {
   @PrimaryGeneratedColumn() id!: number;
 
   @Column({ type: "text" })
@@ -19,9 +22,21 @@ class Place extends BaseEntity {
   @Column({ type: "boolean", default: false })
   isFavorite!: boolean;
 
+  @ManyToOne((type) => User, (user) => user.places)
+  user!: User;
+
   @Column({ type: "timestamp" }) createdAt!: Date;
 
   @Column({ type: "timestamp" }) updatedAt: Date;
-}
 
-export default Place;
+  @BeforeInsert()
+  dateCreation() {
+    this.createdAt = new Date()
+    this.updatedAt = new Date()
+  }
+
+  @BeforeUpdate()
+  updateDateCreation() {
+    this.updatedAt = new Date()
+  }
+}

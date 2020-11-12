@@ -1,4 +1,4 @@
-import { User } from "../entity/User"
+import { User } from "../../entity/User"
 import { getConnection } from "typeorm"
 
 const emailVerification = async (req, res, next) => {

@@ -1,5 +1,5 @@
 import * as JWT from "jsonwebtoken"
-import { User } from "../entity/User"
+import { User } from "../../entity/User"
 
 
 const jwtChecker = (req, res, next) => {
