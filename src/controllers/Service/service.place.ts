@@ -103,8 +103,6 @@ export const getMyPlaces = async (req, res) => {
     const user: User = req.user
 
     try {
-        // const place: Place = await Place.findOne({ userId: user.id })
-        const places = user.places
         const puser = await User.findOne({ id: user.id }, { relations: ["places"] })
         console.log(puser.places);
         if (puser.places) {

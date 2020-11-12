@@ -1,7 +1,8 @@
 import { Router } from "express"
 import jwtChecker from "../controllers/User/user.jwtVerification"
-import { getNearByDriver, toggleToDriving, ReportMovement } from "../controllers/Service/service"
+import { toggleToDriving, ReportMovement } from "../controllers/Service/service"
 import { addNewPlace, editPlace, deletePlace, getMyPlaces } from "../controllers/Service/service.place"
+import { getNearByDriver } from "../controllers/Service/service.ride"
 
 const serviceRouter = Router()
 

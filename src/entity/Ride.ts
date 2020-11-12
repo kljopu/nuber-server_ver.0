@@ -5,7 +5,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   BeforeInsert,
-  BeforeUpdate
+  BeforeUpdate,
+  RelationId
 } from "typeorm";
 import { rideStatus } from "src/types/types";
 import { User } from "./User";
